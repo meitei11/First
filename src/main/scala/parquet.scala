@@ -1,6 +1,6 @@
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.{DataFrame, SQLContext, SparkSession}
-import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
 
 
 object parquet {
@@ -16,8 +16,8 @@ object parquet {
       .config(conf)
       .getOrCreate()
 
-    val schema = new StructType().add("field1", "string", true)
-        .add("field2", "int", true)
+    val schema = new StructType().add("field1", StringType, true)
+        .add("field2", IntegerType, true)
 
 
     convertToParquet(spark, schema, inputFile, outputFile)
