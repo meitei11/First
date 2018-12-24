@@ -1,5 +1,6 @@
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.{DataFrame, SQLContext, SparkSession}
+import org.apache.spark.sql.types.StructType
 
 
 object parquet {
@@ -15,14 +16,18 @@ object parquet {
       .config(conf)
       .getOrCreate()
 
-    convertToParquet(spark, inputFile, outputFile)
+    val schema = new StructType().add("field1", "string", true)
+        .add("field2", "int", true)
+
+
+    convertToParquet(spark, schema, inputFile, outputFile)
     spark.stop()
   }
 
-  def convertToParquet(spark:SparkSession, inputFile:String, outputFile:String)= {
+  def convertToParquet(spark:SparkSession, schema: StructType, inputFile:String, outputFile:String)= {
     println("===================================================================================")
     println(s"Reading JSON from: $inputFile and writing to: $outputFile ")
-    val df = spark.read.json(inputFile)
+    val df = spark.read.schema(schema).json(inputFile)
     df.printSchema()
     println("===================================================================================")
 
