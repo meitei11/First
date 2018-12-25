@@ -6,10 +6,15 @@ import org.apache.spark.sql.types.{IntegerType, StringType, StructType}
 object parquet {
 
   def main(args: Array[String]) {
-    val inputFile = "/Users/prabin/work/spark/test.json"
-    val outputFile = "/Users/prabin/work/spark/out.parquet"
+    val inputFile = "src/resources/test2.json"
+    val outputFile = "src/resources/parquet/test2"
     val conf:SparkConf = new SparkConf().setSparkHome("/usr/local/spark")
       .setAppName("First App").setMaster("local")
+
+    val sc:SparkContext = new SparkContext(conf)
+    sc.
+
+
     val spark = SparkSession
       .builder()
       .appName("First")
@@ -30,8 +35,11 @@ object parquet {
     val df = spark.read.schema(schema).json(inputFile)
     df.printSchema()
     println("===================================================================================")
-
-    df.write.parquet(outputFile)
+    //df.write.parquet(outputFile)
+    println("===================================================================================")
+    val newDF = spark.read.parquet("src/resources/parquet/*")
+    newDF.show()
+    println("===================================================================================")
   }
 
 }
